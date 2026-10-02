@@ -134,6 +134,54 @@ ul.t li{margin:8px 0}
 .q button.right{background:var(--green);color:#fff;border-color:var(--green)}
 .q button.wrong{background:#b53a2d;color:#fff;border-color:#b53a2d}
 
+
+main{counter-reset:sec}
+main section{counter-increment:sec}
+main section .eyebrow:before{content:counter(sec,decimal-leading-zero) "  \00B7  "}
+.top nav a.active{color:var(--accent);background:#f3e6dc}
+.hgrid{display:grid;grid-template-columns:1.2fr .9fr;gap:44px;align-items:center}
+.hcard{padding:18px;border:1px solid rgba(255,255,255,.2);border-radius:16px;background:rgba(255,255,255,.07);backdrop-filter:blur(6px)}
+.hcard canvas{width:100%;height:auto;display:block}
+.hcard p{margin:8px 0 0;font-size:.8rem;color:#c8d2d1}
+@media(max-width:860px){.hgrid{grid-template-columns:1fr}.hcard{max-width:480px}}
+.clock{margin-top:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px 28px}
+.clock .k{display:block;font-size:.74rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.clock b{display:block;font:700 2rem/1.2 var(--serif);font-variant-numeric:tabular-nums;color:var(--ink)}
+.clock span{color:var(--mute);font-size:.88rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:6px 12px;border-radius:20px;background:#f3e6dc;color:#7a3714;font-size:.86rem;font-weight:500;opacity:0;transform:scale(.85);transition:opacity .4s,transform .4s}
+.show .chip,.chip.in{opacity:1;transform:none}
+.chip.up{background:#fbe7e3;color:#9a2f22}.chip.down{background:#e1f0e8;color:#1f5e41}.chip.flat{background:#ece8de;color:var(--mute)}
+.track{height:26px;border-radius:13px;background:#e8e3d8;overflow:hidden}
+.track.thin{height:12px;border-radius:6px}
+.fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width 1.4s cubic-bezier(.2,.8,.2,1);display:flex;align-items:center;padding-left:12px;color:#fff;font-size:.8rem;font-weight:600;white-space:nowrap}
+.drow{display:grid;grid-template-columns:90px 1fr 190px;gap:12px;align-items:center;margin:8px 0;font-size:.88rem}
+.drow span:last-child{color:var(--mute)}
+@media(max-width:620px){.drow{grid-template-columns:70px 1fr}.drow span:last-child{grid-column:1/-1}}
+.dots{display:grid;grid-template-columns:repeat(auto-fill,minmax(32px,1fr));gap:8px;max-width:560px;margin:10px 0 14px}
+.dot{aspect-ratio:1;border-radius:50%;background:var(--accent);opacity:0;transform:scale(.3);transition:opacity .4s,transform .4s,background .4s,box-shadow .4s}
+.show .dot{opacity:1;transform:none}
+.dot.ok.reveal-ok{background:var(--green);box-shadow:0 0 0 4px rgba(47,125,91,.25)}
+select{width:100%;font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg)}
+.tblwrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:.9rem;min-width:640px}
+.tbl th{text-align:left;font-weight:600;font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);padding:10px 12px;border-bottom:2px solid var(--line)}
+.tbl td{padding:11px 12px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.tbl tr:hover td{background:#faf7f1}
+.tbl td.mx{font-weight:700;color:var(--accent)}
+.faq details{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:10px 0;padding:0 18px}
+.faq summary{cursor:pointer;padding:15px 0;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:after{content:"+";font-size:1.3rem;line-height:1;color:var(--accent);transition:transform .25s}
+.faq details[open] summary:after{transform:rotate(45deg)}
+.faq details p{margin:0 0 16px;color:#39464a}
+#totop{position:fixed;right:18px;bottom:18px;z-index:25;width:42px;height:42px;padding:0;border-radius:50%;background:var(--ink);color:#fff;font-size:1.1rem;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:.3s}
+#totop.show{opacity:1;pointer-events:auto}
+#toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);padding:10px 18px;border-radius:8px;background:var(--ink);color:#fff;font-size:.9rem;opacity:0;pointer-events:none;transition:.3s;z-index:40}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+.card{transition:box-shadow .3s}
+.card:hover{box-shadow:0 8px 24px rgba(29,43,47,.07)}
+
 /* footer */
 footer{background:var(--ink);color:#c5cfce;padding:44px 0 36px;font-size:.9rem}
 .fcols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px}
@@ -149,8 +197,9 @@ footer .copy{margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,
   <div class="wrap">
     <a class="brand" href="#top"><i></i>Desertification India</a>
     <nav>
-      <a href="#intro">Overview</a><a href="#explore">Explorer</a><a href="#land">Land map</a><a href="#share">Charts</a>
-      <a href="#timeline">Timeline</a><a href="#causes">Causes</a><a href="#solutions">Solutions</a><a href="#how">Method</a><a href="#quiz">Quiz</a>
+      <a href="#intro">Overview</a><a href="#explore">Explorer</a><a href="#land">Land map</a><a href="#share">Charts</a><a href="#process">Processes</a>
+      <a href="#states">States</a><a href="#goal">Goal seeker</a><a href="#data">Data</a><a href="#timeline">Timeline</a><a href="#causes">Causes</a>
+      <a href="#solutions">Solutions</a><a href="#how">Method</a><a href="#quiz">Quiz</a><a href="#faq">FAQ</a>
     </nav>
   </div>
 </header>
@@ -165,13 +214,15 @@ footer .copy{margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,
     <path d="M-20 220C150 130 260 240 420 160S700 40 860 120 1100 180 1240 100"/>
     <path d="M-20 460C150 370 260 480 420 400S700 280 860 360 1100 420 1240 340"/>
   </svg>
-  <div class="wrap hero-in">
+  <div class="wrap hero-in"><div class="hgrid"><div>
     <p class="eyebrow">CHE110 &middot; Environmental Studies &middot; Lovely Professional University</p>
     <h1>Geospatial AI Analysis of Desertification in India</h1>
     <p class="lede">How satellite data and a simple machine-learning model reveal the growth of land degradation across India since 2000 &mdash; and what restoration could change.</p>
     <div class="authors"><span class="lead">Arhaan Khan</span><span>Ansh Dewanji</span><span>Sangam</span></div>
     <div class="btns"><a class="btn p" href="#explore">Explore the data</a><a class="btn s" href="#how">How it works</a></div>
   </div>
+  <aside class="hcard"><canvas id="heroChart" width="440" height="270"></canvas><p>Land degraded in India (million ha), ISRO-SAC satellite atlases</p></aside>
+  </div></div>
 </section>
 
 <div class="wrap kf reveal">
@@ -185,16 +236,21 @@ footer .copy{margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,
 
 <main class="wrap">
 <section id="intro" class="reveal">
-  <p class="eyebrow">01 &middot; Overview</p>
+  <p class="eyebrow">Overview</p>
   <h2>What is desertification?</h2>
   <div class="cols">
     <p class="lead-p">Desertification is land degradation in arid, semi-arid and dry sub-humid regions, driven by climate variation and human activity such as deforestation, overgrazing, unsustainable irrigation and erosion. It is not deserts spreading &mdash; it is land losing its productivity. ISRO's satellites map this change over time, and a simple regression model can read the trend and project it forward.</p>
     <div class="callout"><b>Why it matters:</b> degraded land means lower crop yields, scarcer water and weaker livelihoods. India has pledged to restore 26 million hectares by 2030.</div>
   </div>
+  <div class="card clock">
+    <div><span class="k">Degradation clock</span><b id="clk1">0.0</b><span>hectares degraded since you opened this page</span></div>
+    <div><span class="k">At the trend rate</span><b id="clk2">0</b><span>hectares per day, about <span id="clk3"></span> football pitches per hour</span></div>
+    <p class="small" style="grid-column:1/-1;margin:0">Illustrative: the 0.23 million ha/year average from the regression model (3 satellite maps), converted to a per-second rate. It is not a live measurement.</p>
+  </div>
 </section>
 
 <section id="explore" class="reveal">
-  <p class="eyebrow">02 &middot; Interactive analysis</p>
+  <p class="eyebrow">Interactive analysis</p>
   <h2>Trend explorer</h2>
   <div class="card">
     <div class="tabs">
@@ -212,7 +268,7 @@ footer .copy{margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,
 </section>
 
 <section id="land" class="reveal">
-  <p class="eyebrow">03 &middot; Perspective</p>
+  <p class="eyebrow">Perspective</p>
   <h2>If India were 100 squares</h2>
   <div class="card">
     <p class="small" style="margin-top:0">Each square is 1% of India's land. The map follows the year slider above, or press play.</p>
@@ -224,7 +280,7 @@ footer .copy{margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,
 </section>
 
 <section id="share" class="reveal">
-  <p class="eyebrow">04 &middot; Comparison</p>
+  <p class="eyebrow">Comparison</p>
   <h2>Share of India's land by period</h2>
   <div class="card">
     <div class="tabs" id="shareTabs">
@@ -239,8 +295,80 @@ footer .copy{margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,
   </div>
 </section>
 
+<section id="process" class="reveal">
+  <p class="eyebrow">Drivers in the data</p>
+  <h2>Which processes degrade the land?</h2>
+  <div class="card">
+    <div class="tabs" id="pTabs"><button data-i="0">2003-05</button><button data-i="1">2011-13</button><button class="on" data-i="2">2018-19</button><button data-i="3">Compare all</button></div>
+    <canvas id="pc" class="chart" width="800" height="380"></canvas>
+    <div class="chips" id="pdelta" style="margin:14px 0 4px"></div>
+    <p class="small">Share of India's total geographical area (328.72 Mha) affected by each process. Hover a bar for the area in million hectares. Other processes such as salinity are not shown.</p>
+    <h3 style="margin:22px 0 8px;font-size:1.05rem">Desertification within the degraded area</h3>
+    <p class="small" style="margin-top:0">The Atlas separates land degradation overall from <b>desertification</b>, the part in arid, semi-arid and dry sub-humid zones.</p>
+    <div id="desrow"></div>
+  </div>
+</section>
+
+<section id="states" class="reveal">
+  <p class="eyebrow">Where it happens</p>
+  <h2>Concentrated in a few states</h2>
+  <div class="card">
+    <div class="cols" style="align-items:center">
+      <div>
+        <p class="lead-p" style="margin-top:0">Nine states and Union Territories together account for <b>23.79%</b> of India's land area under degradation &mdash; about <b id="ninePct">80%</b> of the 29.77% national total.</p>
+        <div class="track" style="margin:14px 0 6px"><div class="fill" id="nineFill">9 states</div></div>
+        <p class="small" style="margin:0">Bar = share of all degraded land (derived: 23.79 &divide; 29.77).</p>
+      </div>
+      <div class="chips" id="nineChips">
+        <span class="chip">Rajasthan</span><span class="chip">Maharashtra</span><span class="chip">Gujarat</span><span class="chip">Karnataka</span><span class="chip">Ladakh</span><span class="chip">Jharkhand</span><span class="chip">Odisha</span><span class="chip">Madhya Pradesh</span><span class="chip">Telangana</span>
+      </div>
+    </div>
+    <hr style="border:0;border-top:1px solid var(--line);margin:24px 0">
+    <h3 style="margin:0 0 6px;font-size:1.05rem">Getting worse almost everywhere</h3>
+    <p class="lead-p" style="margin-top:0">Between 2011-13 and 2018-19, desertification increased in <b>28 of 31</b> states and Union Territories.</p>
+    <div class="dots" id="dots"></div>
+    <p><button class="btn-o" id="dotBtn">Reveal the states that improved</button></p>
+    <p class="out" id="dotOut" style="display:none"></p>
+    <p class="small">Rajasthan has the largest share of any state, nearly 22% of the country's degraded land.</p>
+  </div>
+</section>
+
+<section id="goal" class="reveal">
+  <p class="eyebrow">Interactive</p>
+  <h2>Goal seeker: how much restoration is enough?</h2>
+  <div class="card">
+    <div class="two" style="align-items:start">
+      <div>
+        <label for="goalSel" style="margin-top:0">Goal for degraded land</label>
+        <select id="goalSel"><option value="94.53">Back to the 2003-05 level (94.5 Mha)</option><option value="90">Below 90 million ha</option><option value="82.18">Down to 25% of India (82.2 Mha)</option></select>
+        <label for="gr">Restoration per year: <b id="grv">2.4</b> million ha</label>
+        <input id="gr" type="range" min="0" max="6" step="0.1" value="2.4">
+        <p><button class="btn-o" id="pledge">Use India's pledge (about 2.4 Mha/yr)</button></p>
+        <label for="gy">Target year: <b id="gyv">2040</b></label>
+        <input id="gy" type="range" min="2025" max="2075" value="2040">
+      </div>
+      <div>
+        <p class="out" id="gout1" style="margin-top:0"></p>
+        <p class="out" id="gout2"></p>
+      </div>
+    </div>
+    <canvas id="gc" class="chart" width="800" height="300" style="margin-top:12px"></canvas>
+    <p class="small">Model: linear trend from the three atlases, minus restoration after 2019. The dashed line is the no-action trend. The estimate is indicative, not a forecast.</p>
+  </div>
+</section>
+
+<section id="data" class="reveal">
+  <p class="eyebrow">Open data</p>
+  <h2>The numbers behind the charts</h2>
+  <div class="card">
+    <div class="tblwrap"><table class="tbl" id="tbl"></table></div>
+    <p style="margin:14px 0 0"><button class="btn-o" id="csv">Download CSV</button> <button class="btn-o" id="copy">Copy table</button></p>
+    <p class="small">Source: Space Applications Centre, ISRO &mdash; Desertification and Land Degradation Atlas of India (2003-05, 2011-13, 2018-19). Percentages are of India's geographical area (328.72 Mha); the 2011-13 and 2003-05 total shares are computed from the area figures.</p>
+  </div>
+</section>
+
 <section id="timeline" class="reveal">
-  <p class="eyebrow">05 &middot; Context</p>
+  <p class="eyebrow">Context</p>
   <h2>India and desertification: timeline</h2>
   <div class="tl">
     <div class="ti"><b>1994</b><span>UN Convention to Combat Desertification (UNCCD) adopted.</span></div>
@@ -255,7 +383,7 @@ footer .copy{margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,
 </section>
 
 <section id="causes" class="reveal">
-  <p class="eyebrow">06 &middot; Drivers</p>
+  <p class="eyebrow">Drivers</p>
   <h2>Causes of desertification</h2>
   <div class="causes">
     <div class="flip"><div><p class="f">Deforestation</p><p class="b">Cutting trees removes roots that hold soil and shade that keeps it moist.</p></div></div>
@@ -267,7 +395,7 @@ footer .copy{margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,
 </section>
 
 <section id="solutions" class="reveal">
-  <p class="eyebrow">07 &middot; Response</p>
+  <p class="eyebrow">Response</p>
   <h2>What can be done</h2>
   <div class="causes">
     <div class="flip"><div><p class="f">Plant trees</p><p class="b">Afforestation and shelter-belts hold soil and slow the wind. The Green India Mission supports this.</p></div></div>
@@ -279,7 +407,7 @@ footer .copy{margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,
 </section>
 
 <section id="how" class="reveal">
-  <p class="eyebrow">08 &middot; Method</p>
+  <p class="eyebrow">Method</p>
   <h2>How the analysis works</h2>
   <div class="card">
     <ol class="steps">
@@ -293,7 +421,7 @@ footer .copy{margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,
 </section>
 
 <section id="quiz" class="reveal">
-  <p class="eyebrow">09 &middot; Check your understanding</p>
+  <p class="eyebrow">Check your understanding</p>
   <h2>Quick quiz</h2>
   <div class="card">
     <div id="qbox"></div>
@@ -301,8 +429,20 @@ footer .copy{margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,
   </div>
 </section>
 
+<section id="faq" class="reveal">
+  <p class="eyebrow">Questions</p>
+  <h2>Frequently asked questions</h2>
+  <div class="faq">
+    <details><summary>What is the difference between land degradation and desertification?</summary><p>Land degradation is the broad loss of land productivity anywhere. Desertification is degradation specifically in arid, semi-arid and dry sub-humid regions. In 2018-19 ISRO mapped 97.85 Mha as degraded, of which 83.69 Mha was desertification.</p></details>
+    <details><summary>Why use a simple linear model?</summary><p>There are only three atlas periods, so a straight line is the most honest model: it needs two parameters and is easy to explain. A richer model would overfit. Treat projections as an illustration of the trend, not a forecast.</p></details>
+    <details><summary>How reliable are the numbers?</summary><p>They come from ISRO-SAC satellite mapping with ground checks, but mapping methods and sensors differ slightly between atlas periods, so small changes should be read with care.</p></details>
+    <details><summary>Is this only an Indian problem?</summary><p>No. The UNCCD estimates that up to 40% of the world's land is degraded (Global Land Outlook, 2022).</p></details>
+    <details><summary>What can I do personally?</summary><p>Plant and protect trees, save water, choose sustainably produced food, and share what you learn. Community watershed and tree-planting programmes are good places to start.</p></details>
+  </div>
+</section>
+
 <section id="why" class="reveal">
-  <p class="eyebrow">10 &middot; Significance</p>
+  <p class="eyebrow">Significance</p>
   <h2>Why it matters</h2>
   <ul class="t lead-p">
     <li>Threatens food security, water availability and livelihoods.</li>
@@ -311,6 +451,9 @@ footer .copy{margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,
   </ul>
 </section>
 </main>
+
+<button id="totop" aria-label="Back to top">&uarr;</button>
+<div id="toast"></div>
 
 <footer>
   <div class="wrap">
@@ -355,6 +498,7 @@ function countUp(el){
 const io = new IntersectionObserver(es => es.forEach(e => {
   if (!e.isIntersecting) return;
   e.target.classList.add("show");
+  e.target.dispatchEvent(new Event("shown"));
   e.target.querySelectorAll("[data-to]").forEach(countUp);
   if (e.target.id === "explore") animate();
   if (e.target.id === "share") startShare();
@@ -491,13 +635,14 @@ document.querySelectorAll("#shareTabs button").forEach(b => b.onclick = () => {
 document.getElementById("replay").onclick = startShare;
 
 /* single animation loop */
-(function tick(t){
+function tick(t){
   if (prog < 1) prog = Math.min(1, (t-pT0)/1300);
   const dt = Math.min(.5,(t-(tick.l||t))/1000); tick.l = t; const kk = 1-Math.exp(-dt*10);
   dispY += (+yr.value - dispY)*kk; dispR += (+rest.value - dispR)*kk;
-  draw(t); drawShare();
+  draw(t); drawShare(); drawExtra(t);
   requestAnimationFrame(tick);
-})(0);
+}
+requestAnimationFrame(tick);
 
 /* land grid */
 const grid = document.getElementById("grid");
@@ -562,6 +707,203 @@ QS.forEach((q,i)=>{
   qbox.appendChild(d);
 });
 
+
+/* ================= extra data + interactions ================= */
+const $id = id => document.getElementById(id);
+const PROC = [
+  {k:"Water erosion", v:[10.83,10.98,11.01], c:"--accent"},
+  {k:"Vegetation degradation", v:[8.60,8.91,9.15], c:"--accent2"},
+  {k:"Wind erosion", v:[5.58,5.55,5.46], c:"--blue"}];
+const DES = [81.48, 82.64, 83.69];
+
+function tipC(c, cx, x, y, lines){
+  cx.font = "14px system-ui";
+  const w = Math.max(...lines.map(l => cx.measureText(l).width)) + 20, h = lines.length*20 + 12;
+  const tx = Math.min(Math.max(x - w/2, 6), c.width - w - 6), ty = Math.max(y - h - 12, 4);
+  cx.fillStyle = "rgba(30,20,10,.92)"; cx.beginPath(); cx.roundRect(tx, ty, w, h, 8); cx.fill();
+  cx.fillStyle = "#fff"; cx.textAlign = "left"; lines.forEach((l,i) => cx.fillText(l, tx+10, ty+22+i*20));
+}
+function hoverOf(c){
+  const o = {p:null};
+  const f = e => { const r = c.getBoundingClientRect(), q = e.touches ? e.touches[0] : e;
+    o.p = {x:(q.clientX-r.left)*c.width/r.width, y:(q.clientY-r.top)*c.height/r.height}; };
+  c.addEventListener("mousemove", f); c.addEventListener("touchmove", f, {passive:true});
+  c.addEventListener("mouseleave", () => o.p = null);
+  return o;
+}
+function toast(msg){ const t = $id("toast"); t.textContent = msg; t.classList.add("on"); setTimeout(() => t.classList.remove("on"), 1800); }
+
+/* ---- hero mini chart ---- */
+const hc = $id("heroChart"), hx = hc.getContext("2d"); let hT0 = performance.now();
+function drawHero(){
+  const W = hc.width, H = hc.height, L = 34, R = 20, T = 34, B = 44;
+  const k = ease(reduce ? 1 : Math.min(1, (performance.now()-hT0-400)/1600));
+  hx.clearRect(0,0,W,H);
+  const X = v => L + (W-L-R)*(v-2002)/(2020-2002), Yv = v => T + (H-T-B)*(1-(v-93)/(99-93));
+  hx.strokeStyle = "rgba(255,255,255,.14)"; hx.fillStyle = "rgba(255,255,255,.55)"; hx.font = "12px system-ui"; hx.textAlign = "right";
+  [93,95,97,99].forEach(v => { hx.beginPath(); hx.moveTo(L,Yv(v)); hx.lineTo(W-R,Yv(v)); hx.stroke(); hx.fillText(v, L-6, Yv(v)+4); });
+  const lim = 2002 + 18*k;
+  const g = hx.createLinearGradient(0,T,0,H-B); g.addColorStop(0,"rgba(242,196,141,.5)"); g.addColorStop(1,"rgba(242,196,141,0)");
+  const pts = xs.map((x,i) => [x, ys[i]]);
+  const Yat = x => { if (x<=pts[0][0]) return pts[0][1]; for (let i=1;i<3;i++) if (x<=pts[i][0]){ const [a,b] = [pts[i-1],pts[i]]; return a[1]+(b[1]-a[1])*(x-a[0])/(b[0]-a[0]); } return pts[2][1]; };
+  hx.beginPath(); hx.moveTo(X(pts[0][0]), H-B);
+  for (let x=pts[0][0]; x<=Math.min(lim,pts[2][0]); x+=.25) hx.lineTo(X(x), Yv(Yat(x)));
+  hx.lineTo(X(Math.min(lim,pts[2][0])), H-B); hx.closePath(); hx.fillStyle = g; hx.fill();
+  hx.strokeStyle = "#f2c48d"; hx.lineWidth = 3; hx.beginPath();
+  for (let x=pts[0][0]; x<=Math.min(lim,pts[2][0]); x+=.25){ x===pts[0][0] ? hx.moveTo(X(x),Yv(Yat(x))) : hx.lineTo(X(x),Yv(Yat(x))); }
+  hx.stroke(); hx.lineWidth = 1;
+  pts.forEach(([x,v],i) => { if (lim < x) return;
+    hx.fillStyle = "#1d2b2f"; hx.strokeStyle = "#f2c48d"; hx.lineWidth = 3; hx.beginPath(); hx.arc(X(x),Yv(v),6,0,7); hx.fill(); hx.stroke(); hx.lineWidth = 1;
+    hx.fillStyle = "#fff"; hx.textAlign = "center"; hx.font = "600 13px system-ui"; hx.fillText(v.toFixed(2), X(x), Yv(v)-14);
+    hx.fillStyle = "rgba(255,255,255,.6)"; hx.font = "12px system-ui"; hx.fillText(labels[i], X(x), H-B+20); });
+}
+
+/* ---- degradation clock ---- */
+const haPerSec = slope*1e6/(365.25*86400), tLoad = performance.now();
+$id("clk2").textContent = Math.round(slope*1e6/365.25).toLocaleString();
+$id("clk3").textContent = Math.round(slope*1e6/8766/0.714);
+setInterval(() => { $id("clk1").textContent = ((performance.now()-tLoad)/1000*haPerSec).toFixed(2); }, 100);
+
+/* ---- process chart ---- */
+const pcv = $id("pc"), pcx = pcv.getContext("2d"), pH = hoverOf(pcv);
+let pSel = 2, prProg = 1, prT0 = 0, pOn = false, pRects = [];
+function pAnim(){ prT0 = performance.now(); prProg = reduce ? 1 : 0; }
+function drawProc(){
+  if (!pOn) return;
+  if (prProg < 1) prProg = Math.min(1, (performance.now()-prT0)/1200);
+  const W = pcv.width, H = pcv.height, L = 190, R = 130, e = ease(prProg);
+  const fg = css("--fg"), mute = css("--mute"), line = css("--line");
+  pcx.clearRect(0,0,W,H); pRects = [];
+  const X = v => L + (W-L-R)*v/12;
+  pcx.font = "13px system-ui"; pcx.lineWidth = 1;
+  [0,3,6,9,12].forEach(v => { pcx.strokeStyle = line; pcx.beginPath(); pcx.moveTo(X(v),10); pcx.lineTo(X(v),H-30); pcx.stroke();
+    pcx.fillStyle = mute; pcx.textAlign = "center"; pcx.fillText(v+"%", X(v), H-10); });
+  const shade = [.4,.7,1];
+  PROC.forEach((p,i) => {
+    const gy = 14 + i*118; const col = css(p.c);
+    pcx.fillStyle = fg; pcx.font = "600 14px system-ui"; pcx.textAlign = "right";
+    pcx.fillText(p.k, L-14, gy + (pSel<3 ? 54 : 52));
+    if (pSel < 3){
+      const v = p.v[pSel], y = gy+24, w = (X(v)-L)*e;
+      pcx.fillStyle = col; pcx.beginPath(); pcx.roundRect(L,y,Math.max(w,1),56,[0,8,8,0]); pcx.fill();
+      pcx.fillStyle = fg; pcx.font = "600 14px system-ui"; pcx.textAlign = "left";
+      pcx.fillText((v*e).toFixed(2)+"%", L+w+10, y+34);
+      pRects.push({x:L,y,w:X(v)-L,h:56,t:[p.k, labels[pSel], v.toFixed(2)+"% of India", (v/100*TGA).toFixed(1)+" million ha"]});
+    } else {
+      p.v.forEach((v,j) => {
+        const k = ease(Math.min(1, Math.max(0, prProg*1.5 - j*.2))), y = gy+10+j*34, w = (X(v)-L)*k;
+        pcx.globalAlpha = shade[j]; pcx.fillStyle = col; pcx.beginPath(); pcx.roundRect(L,y,Math.max(w,1),28,[0,6,6,0]); pcx.fill(); pcx.globalAlpha = 1;
+        pcx.fillStyle = mute; pcx.font = "12px system-ui"; pcx.textAlign = "left";
+        pcx.fillText(labels[j]+"  "+(v*k).toFixed(2)+"%", L+w+8, y+19);
+        pRects.push({x:L,y,w:X(v)-L,h:28,t:[p.k, labels[j], v.toFixed(2)+"% of India", (v/100*TGA).toFixed(1)+" million ha"]});
+      });
+    }
+  });
+  if (pH.p){ const r = pRects.find(r => pH.p.x>=r.x && pH.p.x<=r.x+r.w+60 && pH.p.y>=r.y && pH.p.y<=r.y+r.h);
+    if (r) tipC(pcv, pcx, Math.min(r.x+r.w, W-80), r.y, r.t); }
+}
+document.querySelectorAll("#pTabs button").forEach(b => b.onclick = () => {
+  document.querySelectorAll("#pTabs button").forEach(x => x.classList.remove("on")); b.classList.add("on"); pSel = +b.dataset.i; pAnim(); });
+$id("process").addEventListener("shown", () => { pOn = true; pAnim(); fillDelta(); fillDes(); });
+function fillDelta(){
+  const box = $id("pdelta"); box.innerHTML = "";
+  PROC.forEach(p => { const d = p.v[2]-p.v[0]; const c = document.createElement("span");
+    c.className = "chip in " + (d>0.05?"up":d<-0.05?"down":"flat");
+    c.textContent = p.k+": "+(d>=0?"+":"")+d.toFixed(2)+" pts since 2003-05"; box.appendChild(c); });
+}
+function fillDes(){
+  const box = $id("desrow"); box.innerHTML = "";
+  DES.forEach((v,i) => { const share = v/ys[i]*100;
+    const r = document.createElement("div"); r.className = "drow";
+    r.innerHTML = `<b>${labels[i]}</b><div class="track thin"><div class="fill" style="padding:0"></div></div><span>${v.toFixed(2)} Mha &middot; ${share.toFixed(1)}% of degraded land</span>`;
+    box.appendChild(r); setTimeout(() => r.querySelector(".fill").style.width = (v/100*100)+"%", 100+i*200); });
+}
+
+/* ---- states ---- */
+$id("states").addEventListener("shown", () => {
+  setTimeout(() => $id("nineFill").style.width = (23.79/(ys[2]/TGA*100)*100).toFixed(1)+"%", 150);
+  $id("ninePct").textContent = Math.round(23.79/(ys[2]/TGA*100)*100)+"%";
+  $$("#nineChips .chip").forEach((c,i) => c.style.transitionDelay = (i*80)+"ms");
+  $$("#dots .dot").forEach((d,i) => d.style.transitionDelay = (300+i*35)+"ms");
+});
+const dotsBox = $id("dots");
+for (let i=0;i<31;i++){ const d = document.createElement("span"); d.className = "dot"+(i>=28?" ok":""); dotsBox.appendChild(d); }
+function $$(s){ return [...document.querySelectorAll(s)]; }
+$id("dotBtn").onclick = function(){
+  const on = !$$("#dots .dot.ok")[0].classList.contains("reveal-ok");
+  $$("#dots .dot.ok").forEach(d => d.classList.toggle("reveal-ok", on));
+  const o = $id("dotOut"); o.style.display = on ? "block" : "none";
+  o.innerHTML = "Improved between 2011-13 and 2018-19: <b>Uttar Pradesh, Rajasthan and Telangana</b>.";
+  this.textContent = on ? "Hide" : "Reveal the states that improved";
+};
+
+/* ---- goal seeker ---- */
+const gcv = $id("gc"), gcx = gcv.getContext("2d"), gH = hoverOf(gcv);
+let gOn = false, dispGR = 2.4;
+const goalVal = () => +$id("goalSel").value;
+function reachYear(goal, r){ for (let y=2019; y<=2100; y++) if (predict(y,r) <= goal) return y; return null; }
+function updateGoal(){
+  const goal = goalVal(), r = +$id("gr").value, ty = +$id("gy").value;
+  $id("grv").textContent = r.toFixed(1); $id("gyv").textContent = ty;
+  const yy = reachYear(goal, r);
+  $id("gout1").innerHTML = yy
+    ? `Restoring <b>${r.toFixed(1)} million ha</b> a year brings degraded land down to <b>${goal.toFixed(1)} Mha</b> by about <b>${yy}</b> (${yy-2019} years after 2019).`
+    : `At <b>${r.toFixed(1)} million ha</b> a year the goal is <b>not reached by 2100</b>: degradation grows by about ${slope.toFixed(2)} Mha a year, so restoration must exceed that first.`;
+  const need = Math.max(0, (slope*ty+icpt - goal)/(ty-2019));
+  $id("gout2").innerHTML = `To reach <b>${goal.toFixed(1)} Mha</b> by <b>${ty}</b> you would need about <b>${need.toFixed(1)} million ha</b> restored every year from 2019 (India's pledge is about 2.4).`;
+}
+["goalSel","gr","gy"].forEach(id => $id(id).addEventListener("input", updateGoal));
+$id("pledge").onclick = () => { $id("gr").value = 2.4; updateGoal(); };
+$id("goal").addEventListener("shown", () => { gOn = true; });
+updateGoal();
+function drawGoal(){
+  if (!gOn) return;
+  dispGR += (+$id("gr").value - dispGR)*.18;
+  const W = gcv.width, H = gcv.height, L = 60, R = 24, T = 16, B = 40;
+  const fg = css("--fg"), mute = css("--mute"), line = css("--line"), acc = css("--accent"), green = css("--green");
+  const X = v => L + (W-L-R)*(v-2000)/100, y0 = 60, y1 = 115, Y = v => T + (H-T-B)*(1-(Math.max(y0,Math.min(v,y1))-y0)/(y1-y0));
+  gcx.clearRect(0,0,W,H); gcx.font = "13px system-ui"; gcx.lineWidth = 1;
+  for (let v=60; v<=110; v+=10){ gcx.strokeStyle = line; gcx.beginPath(); gcx.moveTo(L,Y(v)); gcx.lineTo(W-R,Y(v)); gcx.stroke(); gcx.fillStyle = mute; gcx.textAlign = "right"; gcx.fillText(v, L-8, Y(v)+4); }
+  for (let v=2000; v<=2100; v+=20){ gcx.fillStyle = mute; gcx.textAlign = "center"; gcx.fillText(v, X(v), H-14); }
+  const goal = goalVal();
+  gcx.strokeStyle = "#2f5d8a"; gcx.setLineDash([6,5]); gcx.beginPath(); gcx.moveTo(L,Y(goal)); gcx.lineTo(W-R,Y(goal)); gcx.stroke(); gcx.setLineDash([]);
+  gcx.fillStyle = "#2f5d8a"; gcx.textAlign = "left"; gcx.fillText("goal "+goal.toFixed(1), L+6, Y(goal)-6);
+  gcx.strokeStyle = mute; gcx.setLineDash([3,4]); gcx.beginPath();
+  for (let v=2000; v<=2100; v+=1) v===2000 ? gcx.moveTo(X(v),Y(slope*v+icpt)) : gcx.lineTo(X(v),Y(slope*v+icpt)); gcx.stroke(); gcx.setLineDash([]);
+  gcx.strokeStyle = acc; gcx.lineWidth = 2.5; gcx.beginPath(); gcx.moveTo(X(2003),Y(94.5)); gcx.lineTo(X(2019),Y(slope*2019+icpt)); gcx.stroke();
+  gcx.strokeStyle = green; gcx.lineWidth = 3; gcx.beginPath();
+  for (let v=2019; v<=2100; v+=1){ const p = predict(v,dispGR); v===2019 ? gcx.moveTo(X(v),Y(p)) : gcx.lineTo(X(v),Y(p)); } gcx.stroke(); gcx.lineWidth = 1;
+  const ry = reachYear(goal, dispGR);
+  if (ry){ gcx.fillStyle = green; gcx.beginPath(); gcx.arc(X(ry),Y(goal),7,0,7); gcx.fill(); gcx.fillStyle = fg; gcx.textAlign = "center"; gcx.font = "600 13px system-ui"; gcx.fillText(ry, X(ry), Y(goal)+24); }
+  if (gH.p && gH.p.x>=L && gH.p.x<=W-R){ const yr_ = Math.round(2000+(gH.p.x-L)/(W-L-R)*100);
+    const base = slope*yr_+icpt, sc = yr_>=2019 ? predict(yr_,dispGR) : base;
+    gcx.strokeStyle = mute; gcx.setLineDash([4,4]); gcx.beginPath(); gcx.moveTo(gH.p.x,T); gcx.lineTo(gH.p.x,H-B); gcx.stroke(); gcx.setLineDash([]);
+    tipC(gcv, gcx, gH.p.x, Y(sc), [String(yr_), "No action: "+base.toFixed(1)+" Mha", yr_>=2019 ? "With restoration: "+sc.toFixed(1)+" Mha" : "Historic trend"]); }
+}
+
+/* ---- data table + export ---- */
+const HEAD = ["Period","Total degraded (Mha)","% of India","Desertification (Mha)","Water erosion (% of India)","Vegetation degradation (% of India)","Wind erosion (% of India)"];
+const ROWS = labels.map((l,i) => [l, ys[i].toFixed(2), (ys[i]/TGA*100).toFixed(2), DES[i].toFixed(2), PROC[0].v[i].toFixed(2), PROC[1].v[i].toFixed(2), PROC[2].v[i].toFixed(2)]);
+(function(){ const t = $id("tbl");
+  t.innerHTML = "<thead><tr>"+HEAD.map(h => "<th>"+h+"</th>").join("")+"</tr></thead><tbody>"+
+    ROWS.map((r,ri) => "<tr>"+r.map((c,ci) => { const mx = ci>0 && ri===2 && !(ci===6); return `<td class="${mx?"mx":""}">${c}</td>`; }).join("")+"</tr>").join("")+"</tbody>"; })();
+$id("csv").onclick = () => {
+  const csv = [HEAD, ...ROWS].map(r => r.map(c => '"'+c+'"').join(",")).join("\n");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], {type:"text/csv"})); a.download = "desertification_india.csv"; a.click(); toast("CSV downloaded"); };
+$id("copy").onclick = () => { const txt = [HEAD, ...ROWS].map(r => r.join("\t")).join("\n");
+  (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(() => toast("Table copied"), () => toast("Copy not available here")); };
+
+/* ---- scroll spy + back to top ---- */
+const links = $$(".top nav a");
+const spy = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return;
+  links.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#"+e.target.id));
+  const a = links.find(a => a.classList.contains("active")); a && a.scrollIntoView({inline:"center", block:"nearest"}); }),
+  {rootMargin:"-35% 0px -60% 0px"});
+$$("main section").forEach(s => spy.observe(s));
+addEventListener("scroll", () => $id("totop").classList.toggle("show", scrollY > 700));
+$id("totop").onclick = () => scrollTo({top:0, behavior:"smooth"});
+
+function drawExtra(){ drawHero(); drawProc(); drawGoal(); }
 </script>
 </body>
 </html>
