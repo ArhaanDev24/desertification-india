@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Desertification in India | Geospatial AI Analysis</title>
+<meta name="description" content="Interactive geospatial AI analysis of desertification and land degradation trends in India since 2000, using ISRO satellite atlas data. CHE110 project, Lovely Professional University.">
+<meta name="theme-color" content="#1d2b2f">
+<meta property="og:title" content="Geospatial AI Analysis of Desertification in India">
+<meta property="og:description" content="About 30% of India's land is degraded. Explore the trend, predictions and restoration scenarios.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23b0481c'/%3E%3Cpath d='M3 22q7-10 13-2t13-3v13H3z' fill='%23f2c48d'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f5f0;--fg:#1f2a2e;--card:#ffffff;--ink:#1d2b2f;
+  --accent:#b0481c;--accent2:#d98b52;--mute:#5f6b6e;--line:#e3ded3;
+  --green:#2f7d5b;--blue:#2f5d8a;--sage:#a9c4b2;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --sans:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* top bar */
+#bar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--accent);z-index:30}
+.top{position:sticky;top:0;z-index:20;background:rgba(247,245,240,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:20px;height:56px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
+.brand i{width:26px;height:26px;border-radius:6px;background:var(--accent);display:block;position:relative;overflow:hidden}
+.brand i:after{content:"";position:absolute;left:-4px;right:-4px;bottom:-8px;height:18px;border-radius:50% 50% 0 0;background:#f2c48d}
+.top nav{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{padding:6px 11px;border-radius:6px;text-decoration:none;color:var(--mute);font-size:.88rem;font-weight:500;white-space:nowrap;transition:.15s}
+.top nav a:hover{background:#ece8de;color:var(--ink)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+
+/* hero */
+.hero{position:relative;overflow:hidden;color:#fff;background:linear-gradient(135deg,#1d2b2f 0%,#2c3a36 55%,#6b3418 130%)}
+.hero svg.topo{position:absolute;inset:0;width:100%;height:100%;opacity:.16}
+.hero .wrap{position:relative;padding-top:84px;padding-bottom:96px}
+.eyebrow{margin:0 0 10px;font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.hero .eyebrow{color:#f2c48d}
+h1{margin:0;max-width:760px;font:700 clamp(2rem,5.2vw,3.4rem)/1.12 var(--serif);letter-spacing:-.01em}
+.lede{max-width:640px;margin:18px 0 26px;font-size:1.1rem;color:#d5dcdb}
+.authors{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+.authors span{padding:5px 14px;border:1px solid rgba(255,255,255,.28);border-radius:20px;font-size:.88rem;color:#e8eeee}
+.authors span.lead{background:rgba(255,255,255,.14);color:#fff;font-weight:600}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-block;padding:11px 22px;border-radius:8px;font-weight:600;font-size:.95rem;text-decoration:none;transition:.15s}
+.btn.p{background:var(--accent);color:#fff}.btn.p:hover{background:#963c15}
+.btn.s{border:1px solid rgba(255,255,255,.4);color:#fff}.btn.s:hover{background:rgba(255,255,255,.1)}
+.hero-in{animation:rise .9s both}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+/* key figures */
+.kf{margin-top:-52px;position:relative;z-index:2}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 32px rgba(29,43,47,.1);overflow:hidden}
+.stat{padding:22px 22px 18px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat b{display:block;font:700 2.1rem/1.1 var(--serif);color:var(--ink);font-variant-numeric:tabular-nums}
+.stat span{display:block;margin-top:6px;color:var(--mute);font-size:.85rem}
+
+/* sections */
+main{padding:24px 0 40px}
+section{scroll-margin-top:76px;margin:56px 0}
+h2{margin:0 0 14px;font:700 1.75rem/1.25 var(--serif);color:var(--ink)}
+.lead-p{max-width:720px;color:#39464a}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}
+.reveal.show{opacity:1;transform:none}
+.cols{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:start}
+@media(max-width:760px){.cols{grid-template-columns:1fr}.stat{border-right:0;border-bottom:1px solid var(--line)}}
+.callout{padding:18px 20px;border-left:3px solid var(--accent);background:#fbf3ec;border-radius:0 10px 10px 0;font-size:.95rem;color:#4a3426}
+.callout b{color:var(--accent)}
+
+/* controls */
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;align-items:center}
+.tabs{display:inline-flex;gap:4px;flex-wrap:wrap;margin-bottom:14px;padding:4px;background:#efebe2;border-radius:10px}
+button{font:inherit;font-size:.9rem;font-weight:500;padding:7px 16px;border:0;background:transparent;color:var(--mute);border-radius:7px;cursor:pointer;transition:.15s}
+button:hover{color:var(--ink)}
+button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.btn-o{border:1px solid var(--line);background:var(--card);color:var(--ink)}
+canvas.chart{width:100%;height:auto;display:block}
+input[type=range]{width:100%;accent-color:var(--accent)}
+label{display:block;margin:14px 0 2px;font-size:.92rem;color:var(--mute)}
+label b{color:var(--ink)}
+.out{margin:14px 0 6px;font-size:1.02rem;padding:14px 16px;border-radius:10px;background:#f4f1ea;border-left:3px solid var(--accent)}
+.out b{color:var(--accent)}
+.small{color:var(--mute);font-size:.84rem}
+
+/* land grid */
+.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;max-width:340px;margin:14px auto}
+.grid i{aspect-ratio:1;border-radius:3px;background:var(--sage);transition:background .5s,transform .5s}
+.grid i.d{background:var(--accent);transform:scale(.88)}
+.legend{display:flex;gap:18px;justify-content:center;font-size:.84rem;color:var(--mute)}
+.legend span:before{content:"";display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.legend .g:before{background:var(--sage)}.legend .o:before{background:var(--accent)}
+
+/* cards */
+.causes{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.flip{perspective:800px;height:150px;cursor:pointer;border-radius:12px}
+.flip div{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flip.on div{transform:rotateY(180deg)}
+.flip p{position:absolute;inset:0;margin:0;padding:16px;border-radius:12px;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;backface-visibility:hidden;border:1px solid var(--line)}
+.flip .f{background:var(--card);font-weight:600;font-size:1.02rem;color:var(--ink);border-top:3px solid var(--accent)}
+.flip .f:after{content:"Tap to read";margin-top:4px;font-size:.74rem;font-weight:500;color:var(--mute)}
+.flip .b{background:var(--ink);color:#e8eeee;transform:rotateY(180deg);font-size:.88rem;justify-content:center;line-height:1.5;border-color:var(--ink)}
+
+/* timeline */
+.tl{position:relative;padding-left:30px;border-left:2px solid var(--line);margin-left:8px}
+.ti{position:relative;margin:0 0 18px}
+.ti:before{content:"";position:absolute;left:-39px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--bg)}
+.ti b{display:block;font:700 1.05rem var(--serif);color:var(--accent)}
+.ti span{color:#39464a}
+
+/* steps */
+.steps{counter-reset:s;list-style:none;padding:0;margin:0}
+.steps li{position:relative;padding:8px 0 8px 52px;margin:8px 0}
+.steps li:before{counter-increment:s;content:counter(s);position:absolute;left:0;top:8px;width:34px;height:34px;border-radius:8px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:600}
+ul.t{padding-left:20px;margin:0}
+ul.t li{margin:8px 0}
+
+/* quiz */
+.q{margin:18px 0}
+.q .opts{display:grid;gap:8px;margin-top:8px}
+.q button{text-align:left;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:8px}
+.q button:hover{border-color:var(--accent)}
+.q button.right{background:var(--green);color:#fff;border-color:var(--green)}
+.q button.wrong{background:#b53a2d;color:#fff;border-color:#b53a2d}
+
+/* footer */
+footer{background:var(--ink);color:#c5cfce;padding:44px 0 36px;font-size:.9rem}
+.fcols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px}
+footer h3{margin:0 0 8px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:#f2c48d}
+footer p{margin:4px 0}
+footer .copy{margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,255,.14);color:#92a0a0;font-size:.82rem}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><i></i>Desertification India</a>
+    <nav>
+      <a href="#intro">Overview</a><a href="#explore">Explorer</a><a href="#land">Land map</a><a href="#share">Charts</a>
+      <a href="#timeline">Timeline</a><a href="#causes">Causes</a><a href="#solutions">Solutions</a><a href="#how">Method</a><a href="#quiz">Quiz</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="top" style="margin:0">
+  <svg class="topo" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid slice" fill="none" stroke="#f2c48d" stroke-width="1.2" aria-hidden="true">
+    <path d="M-20 420C150 330 260 440 420 360S700 240 860 320 1100 380 1240 300"/>
+    <path d="M-20 380C150 290 260 400 420 320S700 200 860 280 1100 340 1240 260"/>
+    <path d="M-20 340C150 250 260 360 420 280S700 160 860 240 1100 300 1240 220"/>
+    <path d="M-20 300C150 210 260 320 420 240S700 120 860 200 1100 260 1240 180"/>
+    <path d="M-20 260C150 170 260 280 420 200S700 80 860 160 1100 220 1240 140"/>
+    <path d="M-20 220C150 130 260 240 420 160S700 40 860 120 1100 180 1240 100"/>
+    <path d="M-20 460C150 370 260 480 420 400S700 280 860 360 1100 420 1240 340"/>
+  </svg>
+  <div class="wrap hero-in">
+    <p class="eyebrow">CHE110 &middot; Environmental Studies &middot; Lovely Professional University</p>
+    <h1>Geospatial AI Analysis of Desertification in India</h1>
+    <p class="lede">How satellite data and a simple machine-learning model reveal the growth of land degradation across India since 2000 &mdash; and what restoration could change.</p>
+    <div class="authors"><span class="lead">Arhaan Khan</span><span>Ansh Dewanji</span><span>Sangam</span></div>
+    <div class="btns"><a class="btn p" href="#explore">Explore the data</a><a class="btn s" href="#how">How it works</a></div>
+  </div>
+</section>
+
+<div class="wrap kf reveal">
+  <div class="stats">
+    <div class="stat"><b data-to="97.85" data-d="2">0</b><span>million hectares degraded (2018-19)</span></div>
+    <div class="stat"><b data-to="29.77" data-d="2" data-suf="%">0</b><span>of India's geographical area</span></div>
+    <div class="stat"><b data-to="3.32" data-d="2" data-pre="+">0</b><span>million ha added since 2003-05</span></div>
+    <div class="stat"><b data-to="0.23" data-d="2" data-pre="~">0</b><span>million ha added every year</span></div>
+  </div>
+</div>
+
+<main class="wrap">
+<section id="intro" class="reveal">
+  <p class="eyebrow">01 &middot; Overview</p>
+  <h2>What is desertification?</h2>
+  <div class="cols">
+    <p class="lead-p">Desertification is land degradation in arid, semi-arid and dry sub-humid regions, driven by climate variation and human activity such as deforestation, overgrazing, unsustainable irrigation and erosion. It is not deserts spreading &mdash; it is land losing its productivity. ISRO's satellites map this change over time, and a simple regression model can read the trend and project it forward.</p>
+    <div class="callout"><b>Why it matters:</b> degraded land means lower crop yields, scarcer water and weaker livelihoods. India has pledged to restore 26 million hectares by 2030.</div>
+  </div>
+</section>
+
+<section id="explore" class="reveal">
+  <p class="eyebrow">02 &middot; Interactive analysis</p>
+  <h2>Trend explorer</h2>
+  <div class="card">
+    <div class="tabs">
+      <button class="on" data-m="bar">Satellite data</button>
+      <button data-m="trend">AI trend line</button>
+    </div>
+    <canvas id="cv" class="chart" width="800" height="420"></canvas>
+    <label for="yr">Year: <b id="yv">2030</b></label>
+    <input id="yr" type="range" min="2000" max="2050" value="2030">
+    <label for="rest">Restoration effort: <b id="rv">0</b> million ha restored per year after 2019</label>
+    <input id="rest" type="range" min="0" max="2.5" step="0.1" value="0">
+    <p class="out" id="out"></p>
+    <p class="small">India has pledged to restore 26 million ha by 2030 (about 2.4 million ha/year). Increase the restoration slider to see the green scenario line fall. Hover the chart for exact values.</p>
+  </div>
+</section>
+
+<section id="land" class="reveal">
+  <p class="eyebrow">03 &middot; Perspective</p>
+  <h2>If India were 100 squares</h2>
+  <div class="card">
+    <p class="small" style="margin-top:0">Each square is 1% of India's land. The map follows the year slider above, or press play.</p>
+    <div class="grid" id="grid"></div>
+    <div class="legend"><span class="g">Not mapped as degraded</span><span class="o">Degraded</span></div>
+    <p style="text-align:center"><button class="btn-o" id="play">&#9654; Play 2000 &rarr; 2050</button></p>
+    <p class="out" id="gout" style="text-align:center"></p>
+  </div>
+</section>
+
+<section id="share" class="reveal">
+  <p class="eyebrow">04 &middot; Comparison</p>
+  <h2>Share of India's land by period</h2>
+  <div class="card">
+    <div class="tabs" id="shareTabs">
+      <button data-i="0">2003-05</button><button data-i="1">2011-13</button><button class="on" data-i="2">2018-19</button>
+      <button id="replay">&#8635; Replay</button>
+    </div>
+    <div class="two">
+      <canvas id="donut" class="chart" width="380" height="300"></canvas>
+      <canvas id="rates" class="chart" width="560" height="220"></canvas>
+    </div>
+    <p class="small">Select a period to refill the ring. Green = land not mapped as degraded.</p>
+  </div>
+</section>
+
+<section id="timeline" class="reveal">
+  <p class="eyebrow">05 &middot; Context</p>
+  <h2>India and desertification: timeline</h2>
+  <div class="tl">
+    <div class="ti"><b>1994</b><span>UN Convention to Combat Desertification (UNCCD) adopted.</span></div>
+    <div class="ti"><b>1996</b><span>India ratifies the UNCCD.</span></div>
+    <div class="ti"><b>2001</b><span>India's National Action Programme to Combat Desertification is prepared.</span></div>
+    <div class="ti"><b>2003-05</b><span>ISRO maps 94.53 million ha as degraded.</span></div>
+    <div class="ti"><b>2011-13</b><span>Atlas shows 96.40 million ha degraded.</span></div>
+    <div class="ti"><b>2014</b><span>Green India Mission approved to increase forest and tree cover.</span></div>
+    <div class="ti"><b>2018-19</b><span>Atlas shows 97.85 million ha degraded &mdash; 29.77% of India.</span></div>
+    <div class="ti"><b>2019</b><span>India hosts UNCCD COP14 in New Delhi and pledges to restore 26 million ha by 2030.</span></div>
+  </div>
+</section>
+
+<section id="causes" class="reveal">
+  <p class="eyebrow">06 &middot; Drivers</p>
+  <h2>Causes of desertification</h2>
+  <div class="causes">
+    <div class="flip"><div><p class="f">Deforestation</p><p class="b">Cutting trees removes roots that hold soil and shade that keeps it moist.</p></div></div>
+    <div class="flip"><div><p class="f">Overgrazing</p><p class="b">Too many animals strip grass cover, leaving soil exposed to wind and water.</p></div></div>
+    <div class="flip"><div><p class="f">Unsustainable irrigation</p><p class="b">Over-pumping groundwater and waterlogging cause salinity and dry land.</p></div></div>
+    <div class="flip"><div><p class="f">Soil erosion</p><p class="b">Wind and water erosion carry away fertile topsoil &mdash; the largest degradation process in India.</p></div></div>
+    <div class="flip"><div><p class="f">Climate change</p><p class="b">Erratic rainfall and rising temperatures stress already dry regions.</p></div></div>
+  </div>
+</section>
+
+<section id="solutions" class="reveal">
+  <p class="eyebrow">07 &middot; Response</p>
+  <h2>What can be done</h2>
+  <div class="causes">
+    <div class="flip"><div><p class="f">Plant trees</p><p class="b">Afforestation and shelter-belts hold soil and slow the wind. The Green India Mission supports this.</p></div></div>
+    <div class="flip"><div><p class="f">Save water</p><p class="b">Drip irrigation and rainwater harvesting cut waste and prevent salinity.</p></div></div>
+    <div class="flip"><div><p class="f">Sustainable farming</p><p class="b">Crop rotation, mulching and reduced tillage keep the soil fertile.</p></div></div>
+    <div class="flip"><div><p class="f">Managed grazing</p><p class="b">Rotating pastures lets grass regrow instead of being eaten bare.</p></div></div>
+    <div class="flip"><div><p class="f">Satellite monitoring</p><p class="b">Satellites and AI spot degradation early, so action is faster and cheaper.</p></div></div>
+  </div>
+</section>
+
+<section id="how" class="reveal">
+  <p class="eyebrow">08 &middot; Method</p>
+  <h2>How the analysis works</h2>
+  <div class="card">
+    <ol class="steps">
+      <li><b>Data</b> &mdash; ISRO-SAC Desertification &amp; Land Degradation Atlas for 2003-05, 2011-13 and 2018-19 (satellite-mapped).</li>
+      <li><b>Model</b> &mdash; a least-squares linear regression (supervised machine learning), computed live in your browser.</li>
+      <li><b>Prediction</b> &mdash; the model estimates the degraded area for any year you choose.</li>
+      <li><b>Scenario</b> &mdash; subtracting restoration effort shows how action changes the future.</li>
+    </ol>
+    <p class="small">Limitations: only three data points; the model ignores rainfall and policy changes, and atlas periods use slightly different mapping methods. Results are indicative.</p>
+  </div>
+</section>
+
+<section id="quiz" class="reveal">
+  <p class="eyebrow">09 &middot; Check your understanding</p>
+  <h2>Quick quiz</h2>
+  <div class="card">
+    <div id="qbox"></div>
+    <p class="out" id="qscore" style="display:none"></p>
+  </div>
+</section>
+
+<section id="why" class="reveal">
+  <p class="eyebrow">10 &middot; Significance</p>
+  <h2>Why it matters</h2>
+  <ul class="t lead-p">
+    <li>Threatens food security, water availability and livelihoods.</li>
+    <li>Linked to UN SDG 15.3 (land degradation neutrality), SDG 2 (zero hunger) and SDG 13 (climate action).</li>
+    <li>Remedies: afforestation, sustainable grazing and irrigation, soil and water conservation, public awareness.</li>
+  </ul>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fcols">
+      <div><h3>Project</h3><p>Geospatial AI Analysis of Desertification Trends in India: Environmental Changes Since 2000</p><p>CHE110 &middot; Environmental Studies</p></div>
+      <div><h3>Team</h3><p>Arhaan Khan</p><p>Ansh Dewanji</p><p>Sangam</p></div>
+      <div><h3>Data source</h3><p>Space Applications Centre, ISRO &mdash; Desertification and Land Degradation Atlas of India (2003-05, 2011-13, 2018-19).</p></div>
+    </div>
+    <p class="copy">Lovely Professional University &middot; Academic project. Figures are indicative and should be verified against the original atlas.</p>
+  </div>
+</footer>
+
+<script>
+const reduce = matchMedia("(prefers-reduced-motion:reduce)").matches;
+const TGA = 328.72;
+const labels = ["2003-05", "2011-13", "2018-19"];
+const xs = [2004, 2012, 2018.5];
+const ys = [94.53, 96.40, 97.85];
+const n = xs.length, mx = xs.reduce((a,b)=>a+b)/n, my = ys.reduce((a,b)=>a+b)/n;
+const slope = xs.reduce((a,x,i)=>a+(x-mx)*(ys[i]-my),0) / xs.reduce((a,x)=>a+(x-mx)**2,0);
+const icpt = my - slope*mx;
+const predict = (y, r) => Math.max(0, slope*y + icpt - Math.max(0, y-2019)*r);
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const ease = t => 1 - Math.pow(1-t, 3);
+
+/* progress bar */
+addEventListener("scroll", () => {
+  const h = document.documentElement;
+  document.getElementById("bar").style.width = (h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+"%";
+});
+
+/* reveal + count-up */
+function countUp(el){
+  const to = +el.dataset.to, d = +el.dataset.d, pre = el.dataset.pre||"", suf = el.dataset.suf||"";
+  const t0 = performance.now();
+  (function f(t){
+    const k = reduce ? 1 : Math.min(1,(t-t0)/1400);
+    el.textContent = pre + (to*ease(k)).toFixed(d) + suf;
+    if (k < 1) requestAnimationFrame(f);
+  })(t0);
+}
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add("show");
+  e.target.querySelectorAll("[data-to]").forEach(countUp);
+  if (e.target.id === "explore") animate();
+  if (e.target.id === "share") startShare();
+  io.unobserve(e.target);
+}), {threshold:.2});
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+/* chart */
+const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+const yr = document.getElementById("yr"), rest = document.getElementById("rest");
+let mode = "bar", prog = 1, pT0 = 0, hov = null, dispY = +yr.value, dispR = +rest.value;
+function animate(){ pT0 = performance.now(); prog = reduce ? 1 : 0; }
+const rect = e => { const r = cv.getBoundingClientRect(), p = e.touches ? e.touches[0] : e;
+  return {x:(p.clientX-r.left)*cv.width/r.width, y:(p.clientY-r.top)*cv.height/r.height}; };
+cv.addEventListener("mousemove", e => hov = rect(e));
+cv.addEventListener("touchmove", e => hov = rect(e), {passive:true});
+cv.addEventListener("mouseleave", () => hov = null);
+
+function tip(x, y, lines){
+  ctx.font = "14px system-ui";
+  const w = Math.max(...lines.map(l => ctx.measureText(l).width)) + 20, h = lines.length*20 + 12;
+  const tx = Math.min(Math.max(x - w/2, 6), cv.width - w - 6), ty = Math.max(y - h - 14, 4);
+  ctx.fillStyle = "rgba(30,20,10,.9)"; ctx.beginPath(); ctx.roundRect(tx, ty, w, h, 8); ctx.fill();
+  ctx.fillStyle = "#fff"; ctx.textAlign = "left";
+  lines.forEach((l,i) => ctx.fillText(l, tx+10, ty+22+i*20));
+}
+
+function draw(t = 0){
+  const W = cv.width, H = cv.height, L = 60, R = 20, T = 20, Bm = 50;
+  ctx.clearRect(0,0,W,H);
+  const fg = css("--fg"), mute = css("--mute"), acc = css("--accent"), acc2 = css("--accent2"), line = css("--line");
+  ctx.font = "14px system-ui"; ctx.lineWidth = 1;
+  const y0 = mode==="bar" ? 90 : 72, y1 = 104, st = mode==="bar" ? 2 : 4;
+  const Y = v => T + (H-T-Bm) * (1 - (v-y0)/(y1-y0));
+  ctx.strokeStyle = line; ctx.textAlign = "left";
+  for (let v=y0; v<=y1; v+=st){ ctx.beginPath(); ctx.moveTo(L,Y(v)); ctx.lineTo(W-R,Y(v)); ctx.stroke(); ctx.fillStyle = mute; ctx.fillText(v, 28, Y(v)+4); }
+  ctx.save(); ctx.translate(12,H/2); ctx.rotate(-Math.PI/2); ctx.textAlign="center"; ctx.fillStyle = mute; ctx.fillText("million hectares",0,0); ctx.restore();
+  const r = dispR, e = ease(prog);
+  if (mode === "bar"){
+    const bw = 110, gap = (W-L-R-3*bw)/4;
+    let tipData = null;
+    ys.forEach((v,i)=>{
+      const k = ease(Math.min(1, Math.max(0, prog*1.6 - i*.3)));   // staggered grow
+      const x = L + gap + i*(bw+gap), top = Y(y0) - (Y(y0)-Y(v))*k;
+      const over = hov && hov.x>=x && hov.x<=x+bw && hov.y>=top;
+      const g = ctx.createLinearGradient(0,top,0,Y(y0)); g.addColorStop(0, acc2); g.addColorStop(1, acc);
+      ctx.save(); if (over){ ctx.shadowColor = acc; ctx.shadowBlur = 18; }
+      ctx.fillStyle = g; ctx.beginPath(); ctx.roundRect(x - (over?4:0), top - (over?4:0), bw + (over?8:0), Y(y0)-top + (over?4:0), [8,8,0,0]); ctx.fill(); ctx.restore();
+      ctx.fillStyle = fg; ctx.textAlign="center";
+      ctx.fillText((y0 + (v-y0)*k).toFixed(2), x+bw/2, top-10);
+      ctx.fillText(labels[i], x+bw/2, H-Bm+22);
+      ctx.fillStyle = mute; ctx.fillText((v/TGA*100).toFixed(1)+"% of India", x+bw/2, H-Bm+40);
+      if (over) tipData = [x+bw/2, top, [labels[i], v.toFixed(2)+" million ha", (v/TGA*100).toFixed(2)+"% of India", i? "+"+(v-ys[i-1]).toFixed(2)+" since previous period" : "First mapped period"]];
+    });
+    if (tipData) tip(...tipData);
+  } else {
+    const xMin = 2000, xMax = 2050, X = v => L + (W-L-R)*(v-xMin)/(xMax-xMin);
+    const clamp = p => Y(Math.max(y0, Math.min(p, y1)));
+    ctx.textAlign = "center"; ctx.fillStyle = mute;
+    for (let v=xMin; v<=xMax; v+=10) ctx.fillText(v, X(v), H-Bm+22);
+    const lim = xMin + (xMax-xMin)*e;
+    // projection zone shading
+    ctx.fillStyle = "rgba(180,83,26,.06)"; ctx.fillRect(X(2019), T, Math.max(0, X(Math.min(lim,xMax))-X(2019)), H-T-Bm);
+    ctx.fillStyle = mute; ctx.textAlign = "left"; if (e>.5) ctx.fillText("projection", X(2020)+4, T+14);
+    // area + line under the trend
+    const gr = ctx.createLinearGradient(0,T,0,H-Bm); gr.addColorStop(0,"rgba(232,160,74,.45)"); gr.addColorStop(1,"rgba(232,160,74,0)");
+    ctx.beginPath(); ctx.moveTo(X(xMin), Y(y0));
+    for (let v=xMin; v<=lim; v+=.5) ctx.lineTo(X(v), clamp(slope*v+icpt));
+    ctx.lineTo(X(Math.min(lim,xMax)), Y(y0)); ctx.closePath(); ctx.fillStyle = gr; ctx.fill();
+    ctx.strokeStyle = acc; ctx.lineWidth = 3; ctx.beginPath();
+    for (let v=xMin; v<=lim; v+=.5){ const p = clamp(slope*v+icpt); v===xMin?ctx.moveTo(X(v),p):ctx.lineTo(X(v),p); }
+    ctx.stroke();
+    // restoration scenario with glow
+    if (r > .01 && lim >= 2019){
+      ctx.save(); ctx.strokeStyle = css("--green"); ctx.lineWidth = 3; ctx.shadowColor = css("--green"); ctx.shadowBlur = 10; ctx.beginPath();
+      for (let v=2019; v<=lim; v+=.5){ const p = clamp(predict(v,r)); v===2019?ctx.moveTo(X(v),p):ctx.lineTo(X(v),p); }
+      ctx.stroke(); ctx.restore();
+    }
+    ctx.lineWidth = 1;
+    // data points pop in
+    xs.forEach((x,i)=>{ const k = ease(Math.min(1, Math.max(0, prog*2 - 0.2*i)));
+      ctx.fillStyle = "#fff"; ctx.strokeStyle = acc; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(X(x),Y(ys[i]),8*k,0,7); ctx.fill(); ctx.stroke(); });
+    ctx.lineWidth = 1;
+    // selected-year marker with pulse
+    if (e > .95){
+      const p = clamp(predict(dispY,r)), px = X(dispY), pulse = (t/700)%1;
+      ctx.strokeStyle = css("--blue"); ctx.globalAlpha = 1-pulse; ctx.beginPath(); ctx.arc(px,p,9+pulse*16,0,7); ctx.stroke(); ctx.globalAlpha = 1;
+      ctx.fillStyle = css("--blue"); ctx.beginPath(); ctx.arc(px,p,9,0,7); ctx.fill();
+      ctx.fillStyle = fg; ctx.textAlign = "left"; ctx.fillText(Math.round(dispY), Math.min(px+14, W-60), p-14);
+    }
+    // hover crosshair + tooltip
+    if (hov && hov.x>=L && hov.x<=W-R){
+      const hy = xMin + (hov.x-L)/(W-L-R)*(xMax-xMin), v = predict(hy, r);
+      ctx.strokeStyle = mute; ctx.setLineDash([4,4]); ctx.beginPath(); ctx.moveTo(hov.x,T); ctx.lineTo(hov.x,H-Bm); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = acc; ctx.beginPath(); ctx.arc(hov.x, clamp(v), 5, 0, 7); ctx.fill();
+      tip(hov.x, clamp(v), [Math.round(hy)+(hy>2019?" (projected)":""), v.toFixed(2)+" million ha", (v/TGA*100).toFixed(1)+"% of India"]);
+    }
+  }
+}
+
+/* ---------- share + rate charts ---------- */
+const dc = document.getElementById("donut"), dx = dc.getContext("2d");
+const rc = document.getElementById("rates"), rx = rc.getContext("2d");
+const rates = [(ys[1]-ys[0])/8, (ys[2]-ys[1])/6.5];           // Mha per year between maps
+const rlab = ["2003-05 to 2011-13", "2011-13 to 2018-19"];
+let sel = 2, dPct = 0, dTarget = 0, shareProg = 0, shareOn = false, shareT0 = 0;
+function startShare(){ shareOn = true; shareT0 = performance.now(); shareProg = reduce ? 1 : 0; dPct = reduce ? ys[sel]/TGA*100 : 0; }
+function drawShare(){
+  if (!shareOn) return;
+  shareProg = reduce ? 1 : Math.min(1, (performance.now()-shareT0)/1400);
+  dTarget = ys[sel]/TGA*100; const now = performance.now(), dt = Math.min(.5,(now-(drawShare.last||now))/1000); drawShare.last = now;
+  dPct += (dTarget-dPct)*(reduce?1:1-Math.exp(-dt*7));
+  const acc = css("--accent"), fg = css("--fg"), mute = css("--mute"), green = css("--green"), line = css("--line");
+  let W = dc.width, H = dc.height, cx = W/2, cy = H/2, R0 = 130, R1 = 84;
+  dx.clearRect(0,0,W,H);
+  const a = (dPct/100)*Math.PI*2*ease(shareProg), start = -Math.PI/2;
+  dx.lineWidth = R0-R1; dx.lineCap = "butt";
+  dx.strokeStyle = green; dx.globalAlpha = .85; dx.beginPath(); dx.arc(cx,cy,(R0+R1)/2,start+a,start+Math.PI*2*ease(shareProg)+.0001); dx.stroke(); dx.globalAlpha = 1;
+  dx.strokeStyle = acc; dx.beginPath(); dx.arc(cx,cy,(R0+R1)/2,start,start+a); dx.stroke();
+  dx.fillStyle = fg; dx.textAlign = "center"; dx.font = "bold 40px system-ui"; dx.fillText((dPct*ease(shareProg)).toFixed(1)+"%", cx, cy+8);
+  dx.font = "14px system-ui"; dx.fillStyle = mute; dx.fillText("of India degraded", cx, cy+30);
+  W = rc.width; H = rc.height; rx.clearRect(0,0,W,H);
+  const maxR = .3, L = 150, k = ease(shareProg);
+  rx.font = "14px system-ui";
+  rates.forEach((v,i)=>{ const y = 40 + i*80, w = (W-L-70)*(v/maxR)*k;
+    rx.fillStyle = mute; rx.textAlign = "right"; rx.fillText(rlab[i], L-10, y+22);
+    const g = rx.createLinearGradient(L,0,L+w,0); g.addColorStop(0,css("--accent2")); g.addColorStop(1,acc);
+    rx.fillStyle = g; rx.beginPath(); rx.roundRect(L,y,Math.max(w,1),34,8); rx.fill();
+    rx.fillStyle = fg; rx.textAlign = "left"; rx.fillText((v*k).toFixed(3)+" Mha/yr", L+w+8, y+22); });
+  rx.fillStyle = mute; rx.textAlign = "left"; rx.fillText("Average yearly growth between satellite maps", 10, H-12);
+}
+document.querySelectorAll("#shareTabs button").forEach(b => b.onclick = () => {
+  document.querySelectorAll("#shareTabs button").forEach(x => x.classList.remove("on")); b.classList.add("on"); sel = +b.dataset.i; });
+document.getElementById("replay").onclick = startShare;
+
+/* single animation loop */
+(function tick(t){
+  if (prog < 1) prog = Math.min(1, (t-pT0)/1300);
+  const dt = Math.min(.5,(t-(tick.l||t))/1000); tick.l = t; const kk = 1-Math.exp(-dt*10);
+  dispY += (+yr.value - dispY)*kk; dispR += (+rest.value - dispR)*kk;
+  draw(t); drawShare();
+  requestAnimationFrame(tick);
+})(0);
+
+/* land grid */
+const grid = document.getElementById("grid");
+for (let i=0;i<100;i++) grid.appendChild(document.createElement("i"));
+function paintGrid(pct){
+  const cells = grid.children, k = Math.round(pct);
+  for (let i=0;i<100;i++){ cells[i].classList.toggle("d", i < k); }
+}
+
+function update(){
+  const year = +yr.value, r = +rest.value, p = predict(year, r);
+  document.getElementById("yv").textContent = year;
+  document.getElementById("rv").textContent = r.toFixed(1);
+  const pct = p/TGA*100;
+  const txt = `In <b>${year}</b> the ${year>2019?"projected":"estimated"} degraded area is <b>${p.toFixed(2)} million ha</b> (<b>${pct.toFixed(1)}%</b> of India).`;
+  document.getElementById("out").innerHTML = txt;
+  document.getElementById("gout").innerHTML = txt;
+  paintGrid(pct);
+}
+document.querySelectorAll("#explore .tabs button").forEach(b => b.onclick = () => {
+  document.querySelectorAll("#explore .tabs button").forEach(x => x.classList.remove("on"));
+  b.classList.add("on"); mode = b.dataset.m; animate();
+});
+yr.oninput = rest.oninput = update;
+
+/* play button */
+let timer = null;
+document.getElementById("play").onclick = function(){
+  if (timer){ clearInterval(timer); timer = null; this.innerHTML = "&#9654; Play 2000 &rarr; 2050"; return; }
+  yr.value = 2000; update(); this.innerHTML = "&#10074;&#10074; Pause";
+  timer = setInterval(() => {
+    if (+yr.value >= 2050){ clearInterval(timer); timer = null; this.innerHTML = "&#9654; Play 2000 &rarr; 2050"; return; }
+    yr.value = +yr.value + 1; update();
+  }, 220);
+};
+
+/* flip cards */
+document.querySelectorAll(".flip").forEach(f => { f.tabIndex = 0; f.setAttribute("role","button");
+  f.onclick = () => f.classList.toggle("on");
+  f.onkeydown = e => { if (e.key==="Enter"||e.key===" "){ e.preventDefault(); f.classList.toggle("on"); } }; });
+
+update();
+
+/* ---------- quiz ---------- */
+const QS=[
+ ["What is desertification?",["Deserts spreading by sand only","Land degradation in dry areas","A type of earthquake"],1],
+ ["About how much of India's area was degraded in 2018-19?",["About 3%","About 30%","About 70%"],1],
+ ["Which agency's satellite data maps land degradation in India?",["ISRO","NASA only","WHO"],0],
+ ["How many million hectares has India pledged to restore by 2030?",["2.6","26","260"],1],
+ ["Which is a good way to fight desertification?",["Cut all forests","Overgraze pastures","Plant trees and save water"],2]];
+let qs=0,qa=0;
+const qbox=document.getElementById("qbox");
+QS.forEach((q,i)=>{
+  const d=document.createElement("div");d.className="q";
+  d.innerHTML=`<b>${i+1}. ${q[0]}</b><div class="opts"></div>`;
+  q[1].forEach((o,j)=>{const b=document.createElement("button");b.textContent=o;
+    b.onclick=()=>{ if(d.dataset.done)return; d.dataset.done=1; qa++;
+      d.querySelectorAll("button")[q[2]].classList.add("right");
+      if(j===q[2])qs++; else b.classList.add("wrong");
+      if(qa===QS.length){const s=document.getElementById("qscore");s.style.display="block";s.innerHTML=`You scored <b>${qs} / ${QS.length}</b> ${qs>=4?"- great awareness!":"- read the sections above and try again."}`;}};
+    d.querySelector(".opts").appendChild(b);});
+  qbox.appendChild(d);
+});
+
+</script>
+</body>
+</html>

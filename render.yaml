@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: desertification-india
+    runtime: static
+    staticPublishPath: .
+    pullRequestPreviewsEnabled: false
